@@ -66,7 +66,7 @@ module MK
           element.xpath('.//a').remove
 
           # Remove the dreaded characters.
-          @plot = strip_see_more_text element.text
+          @plot = sanitize strip_see_more_text element.text
         end
       end
 
@@ -158,7 +158,7 @@ module MK
       end
 
       def sanitize string
-        string.gsub(/[\r\n]+/, '').strip
+        string.gsub(/[\r\n]+/, '').gsub(/[\r\n]{2,}/, ' ').strip
       end
     end
   end
