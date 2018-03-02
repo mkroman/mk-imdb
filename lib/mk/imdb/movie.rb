@@ -158,7 +158,7 @@ module MK
       end
 
       def sanitize string
-        string.gsub(/[\r\n]+/, '').gsub(/[\r\n]{2,}/, ' ').strip
+        string.gsub(/[\r\n]+/, '').gsub(/[\s]{2,}/, ' ').strip
       end
     end
   end
