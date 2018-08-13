@@ -23,7 +23,7 @@ module MK
             @id = $1
           end
         end
-        
+
         parse!
       end
 
@@ -59,9 +59,23 @@ module MK
         end
       end
 
+      FILTERED_SECTION_PREFIXES = ['Seasons:', 'Episodes:', 'Creators:',
+                                   'Writers:', 'Stars:', 'Awards:', 'Reviews:'].freeze
+
       # Parse the movie plot.
       def parse_plot!
-        if element = @body.at_css('section.titlereference-section-overview > div:nth-child(1)')
+        reference_sections = @body.css('section.titlereference-section-overview div')
+
+        # Find the first element without bogus text.
+        element = reference_sections.find do |element|
+          text = element.text&.strip
+
+          not FILTERED_SECTION_PREFIXES.find do |prefix|
+            text&.start_with?(prefix)
+          end
+        end
+
+        if element
           # Remove excess information.
           element.xpath('.//a').remove
 
